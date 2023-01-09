@@ -1,28 +1,19 @@
-# AR=ar
-# CC=gcc
-# FLAGS= -Wall -g
+AR=ar
+CC=gcc
+FLAGS= -Wall -g
 
-# all:	txtfind isort libSort.a libFind.a
+all:	graph libGraph.a
 
-# isort:	isort.o libSort.a
-# 	$(CC) $(FLAGS) -o isort isort.o libSort.a -lm
+graph:	main.o libGraph.a
+	$(CC) $(FLAGS) -o graph main.o libGraph.a -lm
 
-# txtfind:	txtfind.o libFind.a
-# 	$(CC) $(FLAGS) -o txtfind txtfind.o libFind.a -lm
+libGraph.a:	main.o
+	$(AR) -rcs libGraph.a main.o
 
-# libSort.a:	isort.o
-# 	$(AR) -rcs libSort.a isort.o
+main.o:	main.c graph.h
+	$(CC) $(FLAGS) -c main.c
 
-# libFind.a:	txtfind.o
-# 	$(AR) -rcs libFind.a txtfind.o
+.PHONY: clean all
 
-# isort.o:	isort.c main.h
-# 	$(CC) $(FLAGS) -c isort.c
-
-# txtfind.o:	txtfind.c main.h
-# 	$(CC) $(FLAGS) -c txtfind.c
-
-# .PHONY: clean all
-
-# clean:
-# 	rm -f *.o *.a isort txtfind
+clean:
+	rm -f *.o *.a graph
