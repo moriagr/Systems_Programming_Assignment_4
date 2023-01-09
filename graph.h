@@ -9,7 +9,6 @@ typedef struct edge_ {
     struct edge_ *next;
 } edge, *pedge;
 
-
 typedef struct GRAPH_NODE_ {
     int node_num;
     pedge edges;
