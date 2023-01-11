@@ -1,7 +1,7 @@
 #ifndef GRAPH_
 #define GRAPH_
 
-typedef struct GRAPH_NODE_ *pnode;;
+typedef struct GRAPH_NODE_ *pnode;
 
 typedef struct edge_ {
     int weight;
@@ -16,6 +16,7 @@ typedef struct GRAPH_NODE_ {
 } node, *pnode;
 
 void build_graph_cmd(pnode *head);
+pnode find_node(pnode *head, int node_num);
 void insert_node_cmd(pnode *head);
 void delete_node_cmd(pnode *head);
 void printGraph_cmd(pnode head); //for self debug

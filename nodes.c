@@ -4,6 +4,30 @@
 
 Node *nodes; //linked list of nodes
 
+
+//Node* head_node = NULL;
+//int num_nodes = 0;
+//
+//void addNode(int value) {
+//    Node* node = malloc(sizeof(Node));
+//    node->value = value;
+//    node->edges = NULL;
+//    node->next = head_node;
+//    head_node = node;
+//    num_nodes++;
+//}
+//
+//Node* getNode(int value) {
+//    Node* node = head_node;
+//    while (node != NULL) {
+//        if (node->value == value) {
+//            return node;
+//        }
+//        node = node->next;
+//    }
+//    return NULL;
+//}
+
 void add_node(Node *node) {
 
 }

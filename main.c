@@ -1,23 +1,16 @@
 #include "algo.h"
 #include "nodes.h"
-#include "edges.h.h"
+#include "edges.h"
+#include "graph.h"
 #include <stdio.h>
 #include <ctype.h>
 
-void printGraph_cmd(pnode head){
-    while (head != NULL) {
-        printf("%d ", head->value);
-        head = head->next;
-    }
-}
-
-
 int main() {
 
-    Node root;
+    pnode root = NULL;
     char command;
     command = getchar();
-//A 4 n 0 2 5 3 3
+
     // Create the graph
     while (command == 'A' ||
             command == 'B' ||
@@ -27,30 +20,32 @@ int main() {
 
 
         if (command == 'A') {
-            deleteGraph(&root);
+//            deleteGraph(root);
             root = NULL;
-            create_graph(&root);
+            build_graph_cmd(&root);
 
         }else if (command == 'B') {
-            add_node(&root);
+//            add_node(&root);
 
         } else if (command == 'D') {
-            delete_node(&root);
+//            delete_node(&root);
 
         } else if (command == 'S') {
-            shortsPath(&root);
+//            shortest_path(&root);
 
         } else if (command == 'T') {
-            TSP(&root);
+//            TSP_cmd(&root);
         }
 
-        operation_char = getchar();
+        command = getchar();
     }
 
-    int start, end;
-    while (scanf("s %d %d", &start, &end) == 2) {
-        bfs(start, end);
-    }
+    printGraph_cmd(root);
+
+//    int start, end;
+//    while (scanf("s %d %d", &start, &end) == 2) {
+//        bfs(start, end);
+//    }
 }
 
 
