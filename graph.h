@@ -9,6 +9,7 @@ typedef struct edge_ {
     struct edge_ *next;
 } edge, *pedge;
 
+
 typedef struct GRAPH_NODE_ {
     int node_num;
     pedge edges;
@@ -18,7 +19,8 @@ typedef struct GRAPH_NODE_ {
 void build_graph_cmd(pnode *head);
 pnode find_node(pnode *head, int node_num);
 void insert_node_cmd(pnode *head);
-void delete_node_cmd(pnode *head);
+void delete_node_cmd(pnode *pnode1);
+void delete_edges_cmd(pedge *root);
 void printGraph_cmd(pnode head); //for self debug
 void deleteGraph_cmd(pnode* head);
 void shortsPath_cmd(pnode head);

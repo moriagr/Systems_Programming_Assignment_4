@@ -18,26 +18,30 @@ int main() {
             command == 'S' ||
             command == 'T') {
 
-
         if (command == 'A') {
-//            deleteGraph(root);
+            if(root != NULL){
+                deleteGraph_cmd(&root);
+            }
             root = NULL;
             build_graph_cmd(&root);
 
         }else if (command == 'B') {
-//            add_node(&root);
+            insert_node_cmd(&root);
 
         } else if (command == 'D') {
-//            delete_node(&root);
+            delete_node_cmd(&root);
 
         } else if (command == 'S') {
-//            shortest_path(&root);
+            shortsPath_cmd(&root);
 
         } else if (command == 'T') {
-//            TSP_cmd(&root);
+            TSP_cmd(&root);
         }
 
-        command = getchar();
+        if(scanf(" %c", &command) != 1){
+            break;
+        }
+        printf("%c\n", command);
     }
 
     printGraph_cmd(root);
