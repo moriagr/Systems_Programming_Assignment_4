@@ -9,7 +9,7 @@ typedef struct Edge{
 } Edge;
 
 void add_edge(int from, int to, int weight);
-void delete_edge(int from, int to);
+//void delete_edge(int from, int to);
 int get_edge_weight(int from, int to);
 
 #endif

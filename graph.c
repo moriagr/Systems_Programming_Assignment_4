@@ -16,7 +16,7 @@ pnode find_node(pnode *head, int num_of_node) {
     return _node;
 }
 
-void add_edges(pnode pnode1, pnode *head){
+void add_edges(pnode pnode1, pnode *head) {
     //B 5 0 4 2 1
     int end_point, weight;
     pedge root_edge = (pedge) malloc(sizeof(struct edge_));
@@ -64,7 +64,7 @@ void build_graph_cmd(pnode *head) {
         _node->edges = NULL;
         _node->node_num = vertex;
 
-        add_edges(_node,head);
+        add_edges(_node, head);
 
         if (i == 0) {
             *head = _node;
@@ -86,11 +86,11 @@ void insert_node_cmd(pnode *head) {
         find = next_node;
         add_edges(find, head);
         pnode next_ = *head;
-        while (next_->next != NULL){
+        while (next_->next != NULL) {
             next_ = next_->next;
         }
         next_->next = find;
-    } else{
+    } else {
         if (find->edges != NULL)
             delete_edges_cmd(&find->edges);
         add_edges(find, head);
@@ -99,11 +99,65 @@ void insert_node_cmd(pnode *head) {
 
 }
 
-void delete_node_cmd(pnode *pnode1) {
+void delete_node_cmd(pnode *head) {
+    int node_to_delete;
+    scanf(" %d", &node_to_delete);
+    pnode currentNode;
+    if ((*head)->node_num == node_to_delete) {
+        delete_edges_cmd(&(*head)->edges);
+        currentNode = *head;
+        *head = (*head)->next;
+        currentNode->next = NULL;
+    }
 
+    pnode prev = *head;
+    pnode curr;
+    while (prev->next != NULL) {
+        curr = prev->next;
+        if (curr->node_num == node_to_delete) {
+            delete_edges_cmd(&curr->edges);
+            currentNode = curr;
+            prev->next = curr->next;
+            if (curr->next != NULL){
+                curr = curr->next;
+            }
+            currentNode->next = NULL;
+        }
+        delete_edge(&prev->edges, node_to_delete);
+        prev = prev->next;
+    }
+    delete_edge(&prev->edges, node_to_delete);
+    free(currentNode);
 }
 
-void delete_edges_cmd(pedge *root){
+void delete_edge(pedge *edges, int edge_to_delete){
+    pedge root;
+
+    if ((*edges) == NULL){
+        return;
+    }
+
+    if ((*edges)->endpoint->node_num == edge_to_delete) {
+        root = *edges;
+        *edges = (*edges)->next;
+        free(root);
+    }
+
+    pedge prev = *edges;
+    pedge curr;
+    while (prev->next != NULL) {
+        curr = prev->next;
+        if (curr->endpoint->node_num == edge_to_delete) {
+            prev->next = curr->next;
+            free(curr);
+        }
+        if (prev->next != NULL){
+            prev = prev->next;
+        }
+    }
+
+}
+void delete_edges_cmd(pedge *root) {
     pedge current = *root;
     pedge next;
 
@@ -135,7 +189,7 @@ void deleteGraph_cmd(pnode *head) {
     pnode next;
 
     while (current != NULL) {
-        pedge edges = current -> edges;
+        pedge edges = current->edges;
         delete_edges_cmd(&edges);
         next = current->next;
         free(current);
