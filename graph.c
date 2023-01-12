@@ -1,12 +1,13 @@
 #include "graph.h"
 #include <stdio.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <ctype.h>
 
 pnode find_node(pnode *head, int num_of_node) {
     pnode _node = NULL;
     pnode tmpHead = *head;
-    while (tmpHead->next != NULL) {
+    while (tmpHead != NULL) {
         if (tmpHead->node_num == num_of_node) {
             _node = tmpHead;
             break;
@@ -14,6 +15,23 @@ pnode find_node(pnode *head, int num_of_node) {
         tmpHead = tmpHead->next;
     }
     return _node;
+}
+
+pnode insert_node(pnode *head, int end_point){
+    pnode find = find_node(head, end_point);
+    if (find == NULL) {
+        node *next_node = malloc(sizeof(struct GRAPH_NODE_));
+        next_node->node_num = end_point;
+        find = next_node;
+    }
+}
+
+void add_node(pnode *head, pnode node_to_add){
+    pnode curr = *head;
+    while (curr->next != NULL){
+        curr = curr->next;
+    }
+    curr->next = node_to_add;
 }
 
 void add_edges(pnode pnode1, pnode *head) {
@@ -24,17 +42,18 @@ void add_edges(pnode pnode1, pnode *head) {
     int flag = 0;
     while (scanf(" %d %d", &end_point, &weight) == 2) {
         pedge _edge = malloc(sizeof(struct edge_));
+        insert_node(head, end_point);
         pnode find = find_node(head, end_point);
         if (find == NULL) {
             node *next_node = malloc(sizeof(struct GRAPH_NODE_));
             next_node->node_num = end_point;
             find = next_node;
+            add_node(head,find);
         }
         _edge->endpoint = find;
         _edge->weight = weight;
         if (flag == 0) {
             pnode1->edges = _edge;
-            root_edge = _edge;
         } else {
             next_edge->next = _edge;
         }
@@ -60,17 +79,21 @@ void build_graph_cmd(pnode *head) {
         int vertex;
         scanf(" %d", &vertex);
 
-        node *_node = malloc(sizeof(struct GRAPH_NODE_));
-        _node->edges = NULL;
-        _node->node_num = vertex;
+        pnode _node = find_node(head, vertex);
+        if (_node == NULL){
+            node *new_node = malloc(sizeof(struct GRAPH_NODE_));
+            new_node->edges = NULL;
+            new_node->node_num = vertex;
+            _node = new_node;
+            add_node(head, _node);
+        }
 
         add_edges(_node, head);
 
         if (i == 0) {
             *head = _node;
-        } else {
-            tmpHead->next = _node;
         }
+
         tmpHead = _node;
     }
 }
@@ -157,6 +180,7 @@ void delete_edge(pedge *edges, int edge_to_delete){
     }
 
 }
+
 void delete_edges_cmd(pedge *root) {
     pedge current = *root;
     pedge next;
@@ -199,16 +223,61 @@ void deleteGraph_cmd(pnode *head) {
     *head = NULL;
 }
 
-void shortsPath_cmd(pnode head) {
-    int start, end;
-    scanf(" %d %d", &start, &end);
-    pnode startNode = find_node(&head, start);
-    pnode tempNode = startNode;
-    pedge currentEdge = tempNode->edges;
-
-
+pnode extract_min(pnode *head){
+    pnode curr = *head;
+    pnode min = *head;
+    while (curr != NULL){
+        if (min->d > curr->d && curr->visited == 0){
+            min = curr;
+        }
+        curr = curr->next;
+    }
+    min->visited = 1;
+    return min;
 }
 
+//e = (u,v)
+void relax(pnode u, pedge e){
+    pnode v = e->endpoint;
+    if (v->d > u->d + e->weight){
+        v->d = u->d + e->weight;
+        v->p = u;
+    }
+}
+
+void shortsPath_cmd(pnode *head) {
+    int start, end;
+    scanf(" %d %d", &start, &end);
+    pnode graph_node = *head;
+
+    //initialize distances
+    while(graph_node != NULL) {
+        if(graph_node->node_num == start){
+            graph_node->d = 0;
+        }
+        else{
+            graph_node->d = INT_MAX;
+        }
+        graph_node->visited = 0;
+        graph_node = graph_node->next;
+    }
+
+    graph_node = *head;
+    while (graph_node != NULL){
+        pnode min = extract_min(head);
+
+        pedge min_edge = min->edges;
+        while (min_edge != NULL){
+            relax(min, min_edge);
+            min_edge = min_edge->next;
+        }
+        graph_node = graph_node->next;
+    }
+
+    pnode endNode = find_node(head, end);
+    printf("Dijsktra shortest path: %d\n", endNode->d);
+
+}
 
 void TSP_cmd(pnode head) {
 

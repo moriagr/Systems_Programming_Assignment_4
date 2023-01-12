@@ -14,7 +14,7 @@ typedef struct Graph {
     int num_of_nodes;
 } Graph;
 
-void add_node(Node node);
+//void add_node(Node node);
 void delete_node(Node node);
 int get_node_value();
 void create_graph();
