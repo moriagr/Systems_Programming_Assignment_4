@@ -42,17 +42,7 @@ int main() {
             break;
         }
     }
+    printf("\n");
 
     printGraph_cmd(root);
 }
-
-
-
-// int main() {
-//     int arr[] = {1, 2, 3};
-//     int n = sizeof(arr) / sizeof(arr[0]);
-
-//     permute(arr, 0, n - 1);
-
-//     return 0;
-// }
