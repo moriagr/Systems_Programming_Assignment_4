@@ -16,7 +16,6 @@ typedef struct GRAPH_NODE_ {
     struct GRAPH_NODE_ *next;
     int d;
     int visited;
-    pnode p;
 } node, *pnode;
 
 void build_graph_cmd(pnode *head);
@@ -30,9 +29,10 @@ void delete_edges_cmd(pedge *root);
 void printGraph_cmd(pnode head); //for self debug
 void deleteGraph_cmd(pnode* head);
 void shortsPath_cmd(pnode *head);
+int dijsktra(pnode *head, int start, int end);
 pnode extract_min(pnode *head);
 void relax(pnode pnode1, pedge pedge1);
 void TSP_cmd(pnode *head);
 void permute(pnode *head, int *permutation_arr, int start, int end, int *min_path);
-int dijsktra(pnode *head, int start, int end);
+
 #endif

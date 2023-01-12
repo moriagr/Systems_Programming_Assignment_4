@@ -284,7 +284,6 @@ void relax(pnode u, pedge e)
     if (v->d > u->d + e->weight)
     {
         v->d = u->d + e->weight;
-        v->p = u;
     }
 }
 
@@ -292,43 +291,7 @@ void shortsPath_cmd(pnode *head)
 {
     int start, end;
     scanf(" %d %d", &start, &end);
-    // pnode graph_node = *head;
 
-    // // initialize distances
-    // while (graph_node != NULL)
-    // {
-    //     if (graph_node->node_num == start)
-    //     {
-    //         graph_node->d = 0;
-    //     }
-    //     else
-    //     {
-    //         graph_node->d = INT_MAX;
-    //     }
-    //     graph_node->visited = 0;
-    //     graph_node = graph_node->next;
-    // }
-
-    // graph_node = *head;
-    // while (graph_node != NULL)
-    // {
-    //     pnode min = extract_min(head);
-
-    //     pedge min_edge = min->edges;
-    //     while (min_edge != NULL)
-    //     {
-    //         relax(min, min_edge);
-    //         min_edge = min_edge->next;
-    //     }
-    //     graph_node = graph_node->next;
-    // }
-
-    // pnode endNode = find_node(head, end);
-
-    // if (endNode->d == INT_MAX)
-    // {
-    //     endNode->d = -1;
-    // }
     printf("Dijsktra shortest path: %d\n", dijsktra(head, start, end));
 }
 
@@ -389,9 +352,7 @@ void TSP_cmd(pnode *head)
         scanf(" %d", &to_visit[i]);
     }
 
-    int short_path;
-    int min_path;
-
+    int min_path=INT_MAX;
     permute(head, to_visit, 0, num_of_vertices - 1, &min_path);
     if (min_path == INT_MAX)
     {
@@ -405,21 +366,24 @@ void permute(pnode *head, int *permutation_arr, int start, int end, int *min_pat
 {
     if (start == end)
     {
-        int short_path = 0;
-        // Print the permutation
-
-        *min_path = INT_MAX;
+        int short_path = INT_MAX;
         for (int i = 0; i < end; i++)
         {
             if (find_node(head, permutation_arr[i])->edges == NULL)
             {
-                continue;
+                short_path = INT_MAX;
+                break;
             }
-            // printf("i:   %d, i+1:  %d\n", permutation_arr[i], permutation_arr[i+1]);
-            // printf("permutation_arr[i+1]:  %d", permutation_arr[i+1]);
+
             int short_path_dijsktra = dijsktra(head, permutation_arr[i], permutation_arr[i + 1]);
+            if (short_path_dijsktra >= *min_path) {
+                break;
+            }
             if (short_path_dijsktra != -1)
             {
+                if (short_path == INT_MAX){
+                    short_path = 0;
+                }
                 short_path += short_path_dijsktra;
             }
         }
@@ -427,11 +391,7 @@ void permute(pnode *head, int *permutation_arr, int start, int end, int *min_pat
         {
             *min_path = short_path;
         }
-        // for (int i = 0; i <= end; i++)
-        // {
-        //     printf("%d ", permutation_arr[i]);
-        // }
-        // printf("\n");
+
     }
     else
     {
@@ -442,11 +402,6 @@ void permute(pnode *head, int *permutation_arr, int start, int end, int *min_pat
             permutation_arr[start] = permutation_arr[i];
             permutation_arr[i] = temp;
 
-            // for (int i = 0; i <= end; i++)
-            // {
-            //     printf("%d ", permutation_arr[i]);
-            // }
-            // printf("\n");
             // Recurse on the sub-array
             permute(head, permutation_arr, start + 1, end, min_path);
 

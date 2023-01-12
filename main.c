@@ -41,7 +41,6 @@ int main() {
         if(scanf(" %c", &command) != 1){
             break;
         }
-        printf("%c\n", command);
     }
 
     printGraph_cmd(root);
