@@ -33,5 +33,6 @@ void shortsPath_cmd(pnode *head);
 pnode extract_min(pnode *head);
 void relax(pnode pnode1, pedge pedge1);
 void TSP_cmd(pnode *head);
-
+void permute(pnode *head, int *permutation_arr, int start, int end, int *min_path);
+int dijsktra(pnode *head, int start, int end);
 #endif

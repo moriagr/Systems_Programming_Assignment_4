@@ -85,7 +85,6 @@ void build_graph_cmd(pnode *head)
         return;
     }
     *head = malloc(num_of_nodes * sizeof(struct GRAPH_NODE_));
-    pnode tmpHead = *head;
 
     for (int i = 0; i < num_of_nodes; i++)
     {
@@ -110,8 +109,6 @@ void build_graph_cmd(pnode *head)
         {
             *head = _node;
         }
-
-        tmpHead = _node;
     }
 }
 
@@ -391,35 +388,11 @@ void TSP_cmd(pnode *head)
     {
         scanf(" %d", &to_visit[i]);
     }
-    // int num_of_permutations = 1;
 
-    // for (int i = 1; i <= num_of_vertices; i++)
-    // {
-    //     num_of_permutations = num_of_permutations * i;
-    // }
-
-    // int permutation[num_of_vertices];
     int short_path;
     int min_path;
-    // for (int i = 0; i < num_of_permutations; i++)
-    // {
-    //     min_path = INT_MAX;
-    //     pnode find;
-    //     for (int j = 0; j < num_of_vertices - 1; j++)
-    //     {
-    //         if (find_node(head, permutation[j])->edges == NULL)
-    //         {
-    //             continue;
-    //         }
-    //         short_path = dijsktra(head, permutation[j], permutation[j + 1]);
-    //         if (short_path != -1 && short_path < min_path)
-    //         {
-    //             min_path = short_path;
-    //         }
-    //     }
-    // }
 
-    permute(to_visit, 0, num_of_vertices - 1, &min_path, head);
+    permute(head, to_visit, 0, num_of_vertices - 1, &min_path);
     if (min_path == INT_MAX)
     {
         min_path = -1;
@@ -428,40 +401,31 @@ void TSP_cmd(pnode *head)
     printf("TSP shortest path: %d\n", min_path);
 }
 
-// void permutation(pnode head, int size, int *to_visit)
-// {
-//     if (size <= 1)
-//     {
-
-//     }
-//     int chosen = 0;
-//     while (chosen < size)
-//     {
-//         return permutation(head, size - 1, to_visit);
-//         chosen++;
-//     }
-// }
-
-void permute(int *permutation_arr, int start, int end, int *min_path, int *head)
+void permute(pnode *head, int *permutation_arr, int start, int end, int *min_path)
 {
-    int short_path;
     if (start == end)
     {
+        int short_path = 0;
         // Print the permutation
 
         *min_path = INT_MAX;
-        pnode find;
-        for (int i = 0; i <= end; i++)
+        for (int i = 0; i < end; i++)
         {
             if (find_node(head, permutation_arr[i])->edges == NULL)
             {
                 continue;
             }
-            short_path = dijsktra(head, permutation_arr[i], permutation_arr[i + 1]);
-            if (short_path != -1 && short_path < *min_path)
+            // printf("i:   %d, i+1:  %d\n", permutation_arr[i], permutation_arr[i+1]);
+            // printf("permutation_arr[i+1]:  %d", permutation_arr[i+1]);
+            int short_path_dijsktra = dijsktra(head, permutation_arr[i], permutation_arr[i + 1]);
+            if (short_path_dijsktra != -1)
             {
-                *min_path = short_path;
+                short_path += short_path_dijsktra;
             }
+        }
+        if (short_path != -1 && short_path < *min_path)
+        {
+            *min_path = short_path;
         }
         // for (int i = 0; i <= end; i++)
         // {
@@ -478,8 +442,13 @@ void permute(int *permutation_arr, int start, int end, int *min_path, int *head)
             permutation_arr[start] = permutation_arr[i];
             permutation_arr[i] = temp;
 
+            // for (int i = 0; i <= end; i++)
+            // {
+            //     printf("%d ", permutation_arr[i]);
+            // }
+            // printf("\n");
             // Recurse on the sub-array
-            permute(permutation_arr, start + 1, end, &min_path, head);
+            permute(head, permutation_arr, start + 1, end, min_path);
 
             // Swap the elements back to restore the original array
             permutation_arr[i] = permutation_arr[start];
