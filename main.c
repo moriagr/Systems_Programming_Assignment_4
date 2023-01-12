@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
-int main() {
+int main()
+{
 
     pnode root = NULL;
     char command;
@@ -10,34 +11,42 @@ int main() {
 
     // Create the graph
     while (command == 'A' ||
-            command == 'B' ||
-            command == 'D' ||
-            command == 'S' ||
-            command == 'T') {
+           command == 'B' ||
+           command == 'D' ||
+           command == 'S' ||
+           command == 'T')
+    {
 
-        if (command == 'A') {
-            if(root != NULL){
+        if (command == 'A')
+        {
+            if (root != NULL)
+            {
                 deleteGraph_cmd(&root);
             }
             root = NULL;
             build_graph_cmd(&root);
-
-        }else if (command == 'B') {
+        }
+        else if (command == 'B')
+        {
             insert_node_cmd(&root);
-
-        } else if (command == 'D') {
+        }
+        else if (command == 'D')
+        {
             delete_node_cmd(&root);
-
-        } else if (command == 'S') {
+        }
+        else if (command == 'S')
+        {
             shortsPath_cmd(&root);
-
-        } else if (command == 'T') {
+        }
+        else if (command == 'T')
+        {
             TSP_cmd(&root);
         }
 
-        if(scanf(" %c", &command) != 1){
+        if (scanf(" %c", &command) != 1)
+        {
             break;
         }
     }
-
+    deleteGraph_cmd(&root);
 }
