@@ -1,6 +1,3 @@
-#include "algo.h"
-#include "nodes.h"
-#include "edges.h"
 #include "graph.h"
 #include <stdio.h>
 #include <ctype.h>
@@ -42,6 +39,5 @@ int main() {
             break;
         }
     }
-    printf("\n");
 
 }

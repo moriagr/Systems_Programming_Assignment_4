@@ -244,7 +244,7 @@ void shortsPath_cmd(pnode *head) {
     int start, end;
     scanf(" %d %d", &start, &end);
 
-    printf("Dijsktra shortest path: %d\n", dijsktra(head, start, end));
+    printf("Dijsktra shortest path: %d \n", dijsktra(head, start, end));
 }
 
 int dijsktra(pnode *head, int start, int end) {
@@ -299,7 +299,7 @@ void TSP_cmd(pnode *head) {
         min_path = -1;
     }
 
-    printf("TSP shortest path: %d\n", min_path);
+    printf("TSP shortest path: %d \n", min_path);
 }
 
 void permute(pnode *head, int *permutation_arr, int start, int end, int *min_path) {
