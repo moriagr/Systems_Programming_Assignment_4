@@ -44,5 +44,4 @@ int main() {
     }
     printf("\n");
 
-    printGraph_cmd(root);
 }
