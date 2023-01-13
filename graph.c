@@ -45,7 +45,7 @@ void add_node(pnode *head, pnode node_to_add)
         return;
     }
     pnode curr = *head;
-    while (curr->next != NULL)
+    while (curr != NULL && curr->next != NULL)
     {
         curr = curr->next;
     }
@@ -55,9 +55,7 @@ void add_node(pnode *head, pnode node_to_add)
 void add_edges(pnode pnode1, pnode *head)
 {
     int end_point, weight;
-    pedge root_edge = (pedge)malloc(sizeof(edge));
-    pedge next_edge = root_edge;
-    int flag = 0;
+    pedge next_edge = NULL;
     while (scanf(" %d %d", &end_point, &weight) == 2)
     {
         pedge _edge = (pedge)malloc(sizeof(edge));
@@ -66,7 +64,6 @@ void add_edges(pnode pnode1, pnode *head)
             printf("Not enough memory!");
             exit(0);
         }
-        // insert_node(head, end_point);
         pnode find = NULL;
         find = find_node(head, end_point);
         if (find == NULL)
@@ -79,13 +76,13 @@ void add_edges(pnode pnode1, pnode *head)
             }
             find->node_num = end_point;
             find->next = NULL;
-            // find = next_node;
+            find->edges = NULL;
             add_node(head, find);
         }
         _edge->endpoint = find;
         _edge->weight = weight;
         _edge->next = NULL;
-        if (flag == 0)
+        if (next_edge == NULL)
         {
             pnode1->edges = _edge;
         }
@@ -93,7 +90,6 @@ void add_edges(pnode pnode1, pnode *head)
         {
             next_edge->next = _edge;
         }
-        flag = 1;
         next_edge = _edge;
     }
 }
@@ -107,18 +103,12 @@ void build_graph_cmd(pnode *head)
     {
         return;
     }
-    // *head = malloc(sizeof(struct GRAPH_NODE_));
-    // *head = (pnode)malloc(num_of_nodes * sizeof(struct GRAPH_NODE_));
-    pnode temp_node = NULL;
-    temp_node = (pnode)malloc(sizeof(node));
-    if (temp_node == NULL)
+    *head = (pnode)malloc(sizeof(node));
+    if (*head == NULL)
     {
         printf("Not enough memory!");
         exit(0);
     }
-    temp_node->node_num = INT_MAX;
-    temp_node->next = NULL;
-    *head = temp_node;
     for (int i = 0; i < num_of_nodes; i++)
     {
         char nChar;
@@ -131,30 +121,35 @@ void build_graph_cmd(pnode *head)
         {
             exit(0);
         }
-
-        pnode _node = find_node(head, vertex);
-        if (_node == NULL)
-        {
-            pnode new_node = NULL;
-            new_node = (pnode)malloc(sizeof(node));
-            if (new_node == NULL)
-            {
-                printf("Not enough memory!");
-                exit(0);
-            }
-            new_node->edges = NULL;
-            new_node->node_num = vertex;
-            new_node->next = NULL;
-            _node = new_node;
-            add_node(head, _node);
-        }
-
-        add_edges(_node, head);
-
+        pnode _node = NULL;
         if (i == 0)
         {
-            *head = _node;
+            (*head)->edges = NULL;
+            (*head)->node_num = vertex;
+            (*head)->next = NULL;
+            _node = *head;
         }
+        else
+        {
+
+            _node = find_node(head, vertex);
+            if (_node == NULL)
+            {
+                pnode new_node = NULL;
+                new_node = (pnode)malloc(sizeof(node));
+                if (new_node == NULL)
+                {
+                    printf("Not enough memory!");
+                    exit(0);
+                }
+                new_node->edges = NULL;
+                new_node->node_num = vertex;
+                new_node->next = NULL;
+                _node = new_node;
+                add_node(head, _node);
+            }
+        }
+        add_edges(_node, head);
     }
 }
 
@@ -203,7 +198,6 @@ void delete_node(pnode *head, int node_to_delete)
         currentNode = *head;
         *head = (*head)->next;
         free(currentNode->next);
-        // currentNode->next = NULL;
     }
 
     pnode prev = *head;
@@ -297,48 +291,6 @@ void printGraph_cmd(pnode head)
     }
 }
 
-// void deleteGraph_cmd(pnode *head)
-// {
-//     pnode current = *head;
-//     pnode next;
-//     // pnode currentNode;
-
-//     while (current != NULL)
-//     {
-//         pedge edge_current = NULL;
-//         // delete_edges_cmd(&edges);
-//         edge_current = current->edges;
-//         pedge next_edge;
-
-//         while (edge_current != NULL)
-//         {
-//             next_edge = edge_current->next;
-//             free(edge_current);
-//             edge_current = next_edge;
-//         }
-//         next = current->next;
-//         // delete_node(&current, current->node_num);
-//         // free(current);
-//         // current = next;
-
-//         // delete_edges_cmd(&current->edges);
-//         // currentNode = *head;
-//         // *head = (*head)->next;
-//         // if(current->next!=)
-//         // delete_edge(&current->edges, current->node_num);
-//         free(current);
-//         // current->edges = NULL;
-//         // current->node_num=-1;
-//         // current->next=NULL;
-
-//         current = next;
-
-//         // currentNode->next = NULL;
-//     }
-//     // free((*head));
-//     head = NULL;
-// }
-
 void deleteGraph_cmd(pnode *head)
 {
     pnode current_node = *head;
@@ -357,7 +309,7 @@ void deleteGraph_cmd(pnode *head)
         current_node = current_node->next;
         free(free_node);
     }
-    free(current_node);
+    head = NULL;
 }
 
 pnode extract_min(pnode *head)
@@ -448,7 +400,6 @@ void TSP_cmd(pnode *head)
     {
         return;
     }
-    // int to_visit[num_of_vertices];
     int *to_visit = (int *)malloc(num_of_vertices * sizeof(int));
 
     for (int i = 0; i < num_of_vertices; i++)

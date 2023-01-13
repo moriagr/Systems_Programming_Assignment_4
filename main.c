@@ -49,5 +49,5 @@ int main()
         }
     }
     deleteGraph_cmd(&root);
-    // free(&root);
+    root = NULL;
 }
